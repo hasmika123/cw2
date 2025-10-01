@@ -1,53 +1,81 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 
 class DetailsScreen extends StatelessWidget {
-  const DetailsScreen({super.key});
+  final Recipe recipe;
+  
+  const DetailsScreen({super.key, required this.recipe});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details Screen'),
+        title: Text(recipe.name),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Details Screen',
-              style: TextStyle(
+            Text(
+              recipe.name,
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 20),
             const Text(
-              'Temporary text.',
-              style: TextStyle(fontSize: 16),
+              'Ingredients',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Card(
               elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Sample Details',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                  children: recipe.ingredients.map((ingredient) => 
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('• ', style: TextStyle(fontSize: 16)),
+                          Expanded(
+                            child: Text(
+                              ingredient,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Temporary text.',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
+                  ).toList(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Instructions',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  recipe.instructions,
+                  style: const TextStyle(fontSize: 16, height: 1.5),
                 ),
               ),
             ),
@@ -57,22 +85,11 @@ class DetailsScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Back to Home'),
+                child: const Text('Back to Recipes'),
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Details Screen Action Button Pressed!'),
-            ),
-          );
-        },
-        tooltip: 'Details Action',
-        child: const Icon(Icons.info),
       ),
     );
   }
